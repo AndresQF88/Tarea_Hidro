@@ -1,0 +1,106 @@
+---
+title: "Comparación cuencas Hidrográficas Río Estralla y Río Banano"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Se mostraran una serie de gráfico, los cuales muentra datos que son muy optimos para poder recrear comparaciones entra las dos cuencas hidrogáficas. 
+
+```{r echo=FALSE}
+
+inp <- read.csv("FDC.csv", na.strings = "")
+```
+
+## Datos Hidrológicos. 
+
+```{r echo=FALSE}
+head(inp)
+```
+
+### Serie de tiempo en los Caudales
+
+```{r echo=FALSE}
+# Datos hidorlógicos ejercicio explorativo 
+
+
+```
+
+```{r echo=FALSE}
+
+# Series de timepo de caudal. 
+plot(inp[,2], type = "l",
+     col= "blue",
+     main= "Volumen del Agua por tiempo",
+     xlab= ("Rio Estrella"),
+     ylab= ("Rio Banano")
+)
+
+lines(inp[,3], col="green")
+```
+
+     Se observa una cierta diferencia en la mayor cantidad de agua que circula en el rio Banano.
+
+### Histograma del Río Estralla
+    
+```{r echo=FALSE}
+
+# Histograma del río Estralla
+hist(inp[,2],
+     main = "Río Estrella",
+     xlab = "Frecuaencia",
+     ylab = "Crecimiento de Aguas",
+     col = "Pink"
+)
+``` 
+
+           Se representa como un conteo de agua por día en sus repectiva clase
+      
+### Histograma del Río Banano
+      
+```{r echo=FALSE}
+# Histograma del río Banano
+hist(inp[,3],
+     main = "Río Banano",
+     xlab = "Frecuencia",
+     ylab = "Crecimiento de Agua",
+     col = "3"
+)
+
+```      
+
+         De la misma forma que el grafico anterior, se observa ese conteo del agua diario.
+
+### Comparación del caudal del río Estrella con el río Banano
+
+```{r echo=FALSE}
+names(inp) <- c("fecha", "Estrella", "Banano")
+attach(inp)
+Tempdate <- strptime(inp[,1], format= "%d/%m/%Y")
+
+MAQ_Estrella <- tapply(Estrella, format(Tempdate, format="%Y"), FUN=sum)
+MAQ_Banano <- tapply(Banano, format(Tempdate, format="%Y"), FUN=sum)
+
+plot(MAQ_Banano, ylim=c(100,3000),
+     main = "Comparaciónn del caulda de los ríos",
+     xlab = "Tiempo anual",
+     ylab = "Cantidad de caudal",
+     col = "4"
+)
+lines(MAQ_Estrella, col=2)
+```
+
+     Se crea una comparación donde cada río logra llegar a un pico de precipitaciones anualmente.
+     
+### Analisis de correlacion
+     
+```{r echo=FALSE}
+corinp <- cor(inp[,2:3], method= "spearman")
+plot(Estrella, Banano,
+     main = "Correlación Hidroclimática",
+)    
+```
+
+              Los ríos encuntra un hidroclimatica correlación.
